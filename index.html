@@ -9,18 +9,22 @@
 </head>
 <body>
     <div id="quiz-container">
-        <h3>Test Your JavaScript Knowledge!</h3>
-        <h1>Welcome To The JavaScript Fundamentals Quiz</h1> 
-        <div id="question-container"></div>
-        <div id="options-container"></div>
-          <button id="start-quiz">start</button>
-          <button id="submit-quiz">Submit Quiz</button></div>
+        <h1>JavaScript Fundamentals Quiz</h1> 
+        <div id="question-container" class="section">
+            <h2 id = "question-text">Question goes here</h2>
+            <div id= "answer-buttons" class="btn-grid">
+        </div>
+       
+          <button id="next-button">Next Question</button>
+        <button id ="submit-button" style="display:none;">Submit Quiz</button>
+        </div>
          
-          <div id="results-container" class="hidden">
-            <h2>Quiz Results</h2>
-            <p id="score"></p>
-            <button id = "results-button">Results</button>
+         
+          <div id="results-container"  class="section" style="display:none;">
+            <h2>Results</h2>
+            <p id="score-text">You scored <span id="score-number">0</span> out of <span id="total-questions">0</span> questions correctly. </p>
             <button id="restart-button">Restart Quiz</button>
+            
           </div>
            
     </body>

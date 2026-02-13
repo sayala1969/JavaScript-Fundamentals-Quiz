@@ -1,12 +1,16 @@
 body{
     font-family: Arial, sans-serif;
-    background-color: #e0e0e0;
-    color: #333;
-    text-align: center;
-    margin: 20px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 10px;
+    border: 50px solid #ccc;
 }
 
-button {
+.btn {
     padding: 10px 20px;
     font-size: 16px;
     cursor: pointer;
@@ -17,20 +21,77 @@ button {
     border-radius: 5px;
 }
 
-button:hover {
-    background-color: #0056b3;
+.btn:hover {
+    background-color: #18191b;
+    cursor: pointer;
+}
+
+.btn.selected {
+    background-color: whitesmoke;
+    color: black;
+    border-color:whitesmoke;
+    font-weight: bold;      
+}
+
+.btn.green {
+    background-color: #28a745;
+    color: white;
+    border-color:#2E7D32;
+    font-weight: bold;      
+}   
+
+.btn.red {
+    background-color: #dc3545;
+    color: white;
+    border-color:#C62828;
+    font-weight: bold;      
+}
+
+#quiz-container {
+    background-color: #f9f9f9;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 75%;
+    text-align: center;
+}
+
+.section {
+    display: block; 
+}
+
+.btn-grid button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#next-button {
+    width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    border:3px solid black;
+    border-radius: 5px;
+    background-color: green;
+    font-size: 20px; 
+}
+
+#next-button:hover {
+    background-color: darkgreen;
     cursor: pointer;
 }
 
 
-#quiz-container {
-    width: 100%;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
+
+
+
 #results-container {
     width: 100%;
     margin: 20px auto;
@@ -40,13 +101,8 @@ button:hover {
     background-color: #f9f9f9;
 }
 
-h3 {
-    font-size: 50px;
-    text-align: center;
-}
-
 h1 {
-    font-size: 30px;
+    font-size: 50px;
     text-align: center;
 }
 
@@ -55,3 +111,17 @@ h2 {
     text-align: center;
 }
 
+#restart-button {
+     width: 50%;
+    margin: 20px auto;
+    padding: 20px;
+    border:3px solid black;
+    border-radius: 5px;
+    background-color: green;
+    font-size: 20px; 
+}
+
+#restart-button:hover {
+    background-color: darkgreen;
+    cursor: pointer;
+}

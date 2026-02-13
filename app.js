@@ -1,88 +1,146 @@
-const quizContainer = document.getElementById("quiz-container");
-const startButton = document.getElementById("start-quiz");
 const questionContainer = document.getElementById("question-container");
-const nextButton = document.getElementById("next-question");
-const submitQuizButton = document.getElementById("submit-quiz");
 const resultContainer = document.getElementById("results-container");
-const resultButton = document.getElementById("view-results");
+const questionText = document.getElementById("question-text");
+const answerButtons = document.getElementById("answer-buttons");
+const nextButton = document.getElementById("next-button");
+const scoreText = document.getElementById("score-text");
 const restartButton = document.getElementById("restart-button");
 
-let questions = ["Question 1: What is the capital of the United States?", "Question 2: What is 1 + 2?", "Question 3: Who wrote 'Harry Potter'?"];
-let options = [
-    ["A) Little Rock", "B) Austin", "C) Washington D.C.", "D) Boston"],
-    ["A) 3", "B) 4", "C) 5", "D) 6"],
-    ["A) Harper Lee", "B) J.K. Rowling", "C) Ernest Hemingway", "D) Mark Twain"]
+const myQuestions = [
+    {
+        question: "What is the capital of the United States?", 
+        answers: [
+            { text: "A) Little Rock", correct: false },
+            { text: "B) Austin", correct: false },
+            { text: "C) Washington D.C.", correct: true },
+            { text: "D) Boston", correct: false }
+        ]
+    },
+    {
+        question: "What is 1 + 2?", 
+        answers: [
+            { text: "A) 3", correct: true },
+            { text: "B) 4", correct: false },
+            
+            { text: "C) 5", correct: false },
+            { text: "D) 6", correct: false }
+        ]
+    },
+    {
+        question: "Who wrote 'Harry Potter'?", 
+        answers: [
+            { text: "A) Harper Lee", correct: false },
+            { text: "B) J.K. Rowling", correct: true },
+            { text: "C) Ernest Hemingway", correct: false },
+            { text: "D) Mark Twain", correct: false }
+    ]
+    }
 ];
-let answers = ["C", "A", "B"];
-let userAnswers = [];
+
+
+let score = 0;
 let currentQuestionIndex = 0;
 
-startButton.addEventListener("click", startQuiz);
-// nextButton.addEventListener("click", displayQuestion);
-submitQuizButton.addEventListener("click", submitQuiz);
-// resultButton.addEventListener("click", viewResults);
-restartButton.addEventListener("click", restartQuiz);
 
-function startQuiz() { 
-    startButton.style.display = "none";
-    displayQuestion();
-   
-}
 
-function displayQuestion() {
-    quizContainer.innerHTML = "";
-    if (currentQuestionIndex < questions.length) {
-        const questionElement = document.createElement("h2");
-        questionElement.textContent = questions[currentQuestionIndex];
-        quizContainer.appendChild(questionElement);
+nextButton.addEventListener("click", () => {
+    const selectedAnswer = answerButtons.querySelector("button.selected");
+    if (selectedAnswer) {
+        // Mark the correct answer in green
+        const allButtons = answerButtons.querySelectorAll("button");
+        allButtons.forEach(button => {
+            if (button.dataset.correct === "true") {
+                button.classList.add("green");
+            }
 
-        options[currentQuestionIndex].forEach(option => {
-            const optionButton = document.createElement("button");
-            optionButton.textContent = option;
-            optionButton.addEventListener("click", () => selectAnswer(option.charAt(0)));
-            quizContainer.appendChild(optionButton);
         });
-    } else {
-        submitQuizButton.style.display = "block";
-    }
-}
-
-function selectAnswer(answer) {
-    userAnswers[currentQuestionIndex] = answer;
-    currentQuestionIndex++;
-    displayQuestion();
-}
-
-function submitQuiz() {
-    submitQuizButton.style.display = "none";
-    resultButton.style.display = "block";
-}
-
-function viewResults() {
-    resultContainer.innerHTML = "";
-    let score = 0;
-
-    questions.forEach((question, index) => {
-        const resultElement = document.createElement("p");
-        const userAnswer = userAnswers[index] || "No answer";
-        const correctAnswer = answers[index];
-        resultElement.textContent = `Question ${index + 1}: ${question} - Your answer: ${userAnswer} - Correct answer: ${correctAnswer}`;
-        resultContainer.appendChild(resultElement);
-        if (userAnswer === correctAnswer) {
+        
+        // Mark the selected answer
+        if (selectedAnswer.dataset.correct === "true") {
             score++;
+        } else {
+            selectedAnswer.classList.add("red");
         }
+        nextButton.setAttribute("disabled", "true");
+        setTimeout(() => {
+            if (currentQuestionIndex < myQuestions.length - 1) {
+                currentQuestionIndex++;
+                setNextQuestion();
+            } else {
+                showResults();
+            }
+
+            nextButton.removeAttribute("disabled");
+        }, 3000);
+    } else {
+        alert("Please select an answer before proceeding.");
+    }
+})
+
+restartButton.addEventListener("click", () => {
+    startQuiz();
+});
+
+function startQuiz() {
+    currentQuestionIndex = 0;
+    score = 0;
+    setNextQuestion();
+    questionContainer.style.display = "block";
+    resultContainer.style.display = "none"; 
+}
+
+    function setNextQuestion() {
+        resetState();
+        showQuestion(myQuestions[currentQuestionIndex]);
+    }
+    
+    function showQuestion(question) {
+        questionText.innerText = question.question;
+        question.answers.forEach(answer => {
+            const button = document.createElement("button");
+            button.innerText = answer.text;
+            button.classList.add("btn");
+            if (answer .correct) {
+                button.dataset.correct = answer.correct;
+            }
+            button.addEventListener("click", selectAnswer);
+            answerButtons.appendChild(button);
+        });
+    }
+        function resetState() {
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+            nextButton.innerText =  "Next";
+            while (answerButtons.firstChild) {
+                answerButtons.removeChild(answerButtons.firstChild); 
+            }
+            nextButton.innerText = "Next";
+    
+    
+        }
+    
+function selectAnswer(e) {
+    const selectedButton = e.target;
+    const correct = selectedButton.dataset.correct === "true"; 
+
+    document.querySelectorAll("button.btn").forEach(button => {
+        button.disabled = true;
     });
 
-    const scoreElement = document.createElement("h3");
-    scoreElement.textContent = `Your Score: ${score} / ${questions.length}`;
-    resultContainer.appendChild(scoreElement);
-    restartButton.style.display = "block";
+    const prevSelected = answerButtons.querySelector("button.selected");
+    if (prevSelected) {
+        prevSelected.classList.remove("selected");
+    }
+    selectedButton.classList.add("selected");
 }
 
-function restartQuiz() {
-    userAnswers = [];
-    currentQuestionIndex = 0;
-    resultContainer.innerHTML = "";
-    restartButton.style.display = "none";
-    startButton.style.display = "block";
-}       
+    function showResults() {
+        let finalScore = 0;
+        const allButtons = answerButtons.querySelectorAll("button.selected");
+        questionContainer.style.display = "none";
+        resultContainer.style.display = "block";
+        scoreText.innerText = `You scored ${score} out of ${myQuestions.length} questions correctly.`;
+    }
+
+    startQuiz();
